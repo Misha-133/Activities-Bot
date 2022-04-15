@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Activities Bot": {
+      "commandName": "Project",
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
