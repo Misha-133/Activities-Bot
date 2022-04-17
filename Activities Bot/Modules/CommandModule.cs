@@ -14,7 +14,7 @@ public class CommandModule : ModuleBase
 
     public override Task BeforeExecuteAsync(ICommandInfo command)
     {
-        if(Context.Interaction is not SocketAutocompleteInteraction)
+        if(Context.Interaction is not SocketAutocompleteInteraction && Context.Channel is not SocketDMChannel)
             GuildCulture = _db.guildLocales.FirstOrDefault(x => x.GuildId == Context.Guild.Id)?.Culture ?? "en";
 
         return base.BeforeExecuteAsync(command);
