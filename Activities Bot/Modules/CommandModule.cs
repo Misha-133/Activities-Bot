@@ -49,7 +49,7 @@ public class CommandModule : ModuleBase
     [SlashCommand("invite", "Invite this bot to your server")]
     public async Task InviteBotCommand()
     {
-        await RespondAsync($"**[ActivitiesBot]({_config.GetValue<string>("InviteUrl")})**А", ephemeral: true);
+        await RespondAsync($"**[ActivitiesBot]({_config.GetValue<string>("InviteUrl")})**", ephemeral: true);
     }
 
     [SlashCommand("activity", "Start Discord Activity")]
