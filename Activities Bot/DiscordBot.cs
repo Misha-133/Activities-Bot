@@ -53,9 +53,6 @@ public class Activities_Bot
             _logger.LogWarning("Production environment; Registering commands globally");
             await _commands.RegisterCommandsGloballyAsync();
         }
-
-        await _client.Rest.DeleteAllGlobalCommandsAsync();
-
     }
 
     public async Task LogAsync(LogMessage msg)
