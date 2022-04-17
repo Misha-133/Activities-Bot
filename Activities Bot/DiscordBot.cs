@@ -11,21 +11,21 @@ public class Activities_Bot
     private readonly IConfiguration _config;
     private readonly ILogger<Activities_Bot> _logger;
     private readonly InteractionHandler _interactionHandler;
-    private AllActivities _allActivities;
 
-    public Activities_Bot(DiscordSocketClient client, InteractionService commands, IConfiguration config, ILogger<Activities_Bot> logger, InteractionHandler interactionHandler, AllActivities allActivities)
+    public Activities_Bot(DiscordSocketClient client, InteractionService commands, IConfiguration config, ILogger<Activities_Bot> logger, InteractionHandler interactionHandler)
     {
         _client = client;
         _commands = commands;
         _config = config;
         _logger = logger;
         _interactionHandler = interactionHandler;
-        _allActivities = allActivities;
     }
 
     public async Task StartAsync()
     {
         _client.Ready += ClientReady;
+        _client.JoinedGuild += JoinedGuild;
+        _client.LeftGuild += LeftGuild;
 
         _client.Log += LogAsync;
         _commands.Log += LogAsync;
@@ -37,6 +37,17 @@ public class Activities_Bot
 
 
         await Task.Delay(-1);
+    }
+
+    private async Task LeftGuild(SocketGuild arg)
+    {
+        await _client.SetGameAsync($"Working on {_client.Guilds.Count} servers");
+    }
+
+    private async Task JoinedGuild(SocketGuild arg)
+    {
+
+        await _client.SetGameAsync($"Working on {_client.Guilds.Count} servers");
     }
 
     private async Task ClientReady()
@@ -53,6 +64,8 @@ public class Activities_Bot
             _logger.LogWarning("Production environment; Registering commands globally");
             await _commands.RegisterCommandsGloballyAsync();
         }
+
+        await _client.SetGameAsync($"Working on {_client.Guilds.Count} servers");
     }
 
     public async Task LogAsync(LogMessage msg)
