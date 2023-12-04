@@ -8,7 +8,7 @@ Discord bot for starting Discord Activities; Rewritten in C#
 ## Run in docker
 ```bash
 docker run -d -e ACTIVITIES_BotToken='' \
--e ACTIVITIES_ConnectionStrings:ActivitiesBot='' \
+-e ACTIVITIES_ConnectionStrings__ActivitiesBot='' \
 -e ACTIVITIES_InviteUrl='' \
 --name activities_bot ghcr.io/misha-133/activities-bot:master
 ```
