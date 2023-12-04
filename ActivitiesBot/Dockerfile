@@ -10,7 +10,7 @@ WORKDIR /src
 COPY ["ActivitiesBot/ActivitiesBot.csproj", "ActivitiesBot/"]
 RUN dotnet restore "ActivitiesBot/ActivitiesBot.csproj"
 COPY . .
-WORKDIR "/src/Activities Bot"
+WORKDIR "/src/ActivitiesBot"
 RUN dotnet build "ActivitiesBot.csproj" -c Release -o /app/build
 
 FROM build AS publish
