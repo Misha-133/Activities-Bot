@@ -118,30 +118,31 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ActivityCommandDescription" xml:space="preserve">
-    <value>Start Discord Activity</value>
+    <value>Запустить Discord Activity</value>
   </data>
   <data name="ConnectButtonText" xml:space="preserve">
-    <value>Join</value>
+    <value>Присоединиться</value>
   </data>
   <data name="HelpDescription" xml:space="preserve">
-    <value>Just join VC from Desktop/Web client, type `/activity` and choose one from the list
-Then press `Enter` and click link-button - you've started an activity in your VC. 
+    <value>Подключитесь к голосовому каналу, введите `/activity` и выберите активность из списка .
+После этого нажмите `Enter` и перейдите по ссылке.
 
-To add bot to your server - use command `/invite`</value>
+
+Чтобы добавить бота на свой сервер используйте `/invite`</value>
   </data>
   <data name="HelpTitle" xml:space="preserve">
-    <value>How to use bot </value>
+    <value>Как пользоваться ботом</value>
   </data>
   <data name="LocaleSet" xml:space="preserve">
-    <value>Locale set - English</value>
+    <value>Язык установлен - Русский</value>
   </data>
   <data name="MustBeInVoice" xml:space="preserve">
-    <value>You must be in a voice channel to use this command</value>
+    <value>Эту команду можно использовать только в голосовом канале</value>
   </data>
   <data name="OnlyInGuilds" xml:space="preserve">
-    <value>You can use this feature only in guilds</value>
+    <value>Эту команду можно использовать только на серверах</value>
   </data>
   <data name="YourActivity" xml:space="preserve">
-    <value>Your Activity</value>
+    <value>Ваша ссылка</value>
   </data>
 </root>

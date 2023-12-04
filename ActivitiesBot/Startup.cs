@@ -13,6 +13,7 @@ using ActivitiesBot.Database;
 using Serilog;
 using Microsoft.Extensions.Hosting;
 
+
 var builder = new HostBuilder();
 
 var loggerConfig = new LoggerConfiguration()
@@ -55,8 +56,8 @@ builder.ConfigureServices((host, services) =>
     services.AddSingleton<InteractionHandler>();
 
     services.AddTransient<LangProvider>();
-
     services.AddLocalization(options => options.ResourcesPath = "Resources");
+
     services.AddHostedService<ActivitiesBot.ActivitiesBot>();
 });
 

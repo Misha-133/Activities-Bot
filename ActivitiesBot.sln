@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32317.152
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Activities Bot", "Activities Bot\Activities Bot.csproj", "{2BD594BA-1271-4937-BF44-F65E5A2E7B11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActivitiesBot", "ActivitiesBot\ActivitiesBot.csproj", "{2BD594BA-1271-4937-BF44-F65E5A2E7B11}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
