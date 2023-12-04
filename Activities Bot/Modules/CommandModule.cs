@@ -1,6 +1,6 @@
-﻿using Activities_Bot.Database;
+﻿using ActivitiesBot.Database;
 
-namespace Activities_Bot.Modules;
+namespace ActivitiesBot.Modules;
 
 
 public class CommandModule : ModuleBase

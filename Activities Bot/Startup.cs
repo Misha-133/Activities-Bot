@@ -8,56 +8,65 @@ global using Microsoft.Extensions.Localization;
 global using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Microsoft.Extensions.DependencyInjection;
-using Activities_Bot;
+using ActivitiesBot;
+using ActivitiesBot.Database;
 using Serilog;
+using Microsoft.Extensions.Hosting;
 
-[assembly: RootNamespace("Activities_Bot")]
+var builder = new HostBuilder();
 
-
-IConfiguration config = new ConfigurationBuilder()
- .AddJsonFile("appsettings.json", optional: true)
- .AddEnvironmentVariables("ACTIVITIES_")
- .Build();
-
-var log = new LoggerConfiguration()
+var loggerConfig = new LoggerConfiguration()
     .WriteTo.Console()
-    .WriteTo.File($"logs/log-{DateTime.Now:dd.MM.yy_HH.mm}.log")
+    .WriteTo.File($"logs/log-{DateTime.Now:yy.MM.dd_HH.mm}.log")
     .CreateLogger();
 
-var activities = new AllActivities();
-activities.Activities = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("activities.json"));
+var activities = new AllActivities
+{
+    Activities = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("activities.json"))
+};
 
 if (activities.Activities is null)
-{
     throw new FileNotFoundException("Missing activities.json");
+
+
+builder.ConfigureAppConfiguration((hostingContext, config) =>
+{
+    config.AddJsonFile("appsettings.json", optional: true);
+    config.AddEnvironmentVariables("ACTIVITIES_");
+});
+
+builder.ConfigureServices((host, services) =>
+{
+    services.AddLogging(options => options.AddSerilog(loggerConfig, true));
+
+
+    services.AddSingleton(activities);
+
+    //Modify this line if using different DB engine
+    services.AddDbContext<ActivitiesDBContext>(options => options.UseSqlServer(host.Configuration.GetConnectionString("ActivitiesBot")));
+
+    services.AddSingleton(new DiscordSocketClient(
+        new DiscordSocketConfig
+        {
+            FormatUsersInBidirectionalUnicode = false,
+            LogGatewayIntentWarnings = false
+        }));
+    services.AddSingleton(x => new InteractionService(x.GetRequiredService<DiscordSocketClient>()));
+    services.AddSingleton<InteractionHandler>();
+
+    services.AddTransient<LangProvider>();
+
+    services.AddLocalization(options => options.ResourcesPath = "Resources");
+    services.AddHostedService<ActivitiesBot.ActivitiesBot>();
+});
+
+var app = builder.Build();
+
+await using (var scope = app.Services.CreateAsyncScope())
+{
+    var prov = scope.ServiceProvider.GetRequiredService<ActivitiesDBContext>();
+    await prov.Database.EnsureCreatedAsync();
 }
 
-var services = new ServiceCollection();
+await app.RunAsync();
 
-services.AddSingleton(config);
-services.AddSingleton(activities);
-
-//Modify this line if using different DB engine
-services.AddDbContext<Activities_Bot.Database.ActivitiesDBContext>(options => options.UseSqlServer(config.GetConnectionString("ActivitiesBot")));
-
-services.AddLogging(loggerBuilder => loggerBuilder.AddSerilog(log, dispose: true));
-services.AddSingleton(new DiscordSocketClient(
-    new DiscordSocketConfig
-    {
-        FormatUsersInBidirectionalUnicode = false,
-        LogGatewayIntentWarnings = false
-    }));
-services.AddSingleton(x => new InteractionService(x.GetRequiredService<DiscordSocketClient>()));
-services.AddSingleton<InteractionHandler>();
-
-services.AddTransient<LangProvider>();
-services.AddSingleton<Activities_Bot.Activities_Bot>();
-
-services.AddLocalization(options => options.ResourcesPath = "Resources");
-
-var provider = services.BuildServiceProvider();
-
-var prov = provider.GetRequiredService<Activities_Bot.Database.ActivitiesDBContext>();
-prov.Database.EnsureCreated();
-
-await provider.GetRequiredService<Activities_Bot.Activities_Bot>().StartAsync();

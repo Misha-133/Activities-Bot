@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Activities_Bot;
+namespace ActivitiesBot;
 
 public class InteractionHandler(DiscordSocketClient client, InteractionService handler, IServiceProvider services)
 {

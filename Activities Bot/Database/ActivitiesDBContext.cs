@@ -1,4 +1,4 @@
-﻿namespace Activities_Bot.Database;
+﻿namespace ActivitiesBot.Database;
 
 public class ActivitiesDBContext(DbContextOptions<ActivitiesDBContext> options) : DbContext(options)
 {

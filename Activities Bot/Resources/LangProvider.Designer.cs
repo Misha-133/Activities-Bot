@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Activities_Bot.Resources {
+namespace ActivitiesBot.Resources {
     using System;
     
     

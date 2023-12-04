@@ -1,8 +1,11 @@
-﻿namespace Activities_Bot;
+﻿using Microsoft.Extensions.Hosting;
 
-public class Activities_Bot(DiscordSocketClient client, InteractionService commands, IConfiguration config, ILogger<Activities_Bot> logger, InteractionHandler interactionHandler)
+namespace ActivitiesBot;
+
+public class ActivitiesBot(DiscordSocketClient client, InteractionService commands, IConfiguration config, 
+    ILogger<ActivitiesBot> logger, InteractionHandler interactionHandler) : IHostedService
 {
-    public async Task StartAsync()
+    public async Task StartAsync(CancellationToken token)
     {
         client.Ready += ClientReady;
         client.JoinedGuild += JoinedGuild;
@@ -15,9 +18,11 @@ public class Activities_Bot(DiscordSocketClient client, InteractionService comma
 
         await client.LoginAsync(TokenType.Bot, config["BotToken"]);
         await client.StartAsync();
+    }
 
-
-        await Task.Delay(-1);
+    public async Task StopAsync(CancellationToken token)
+    {
+        await client.StopAsync();
     }
 
     private async Task LeftGuild(SocketGuild arg)
@@ -27,7 +32,6 @@ public class Activities_Bot(DiscordSocketClient client, InteractionService comma
 
     private async Task JoinedGuild(SocketGuild arg)
     {
-
         await client.SetGameAsync($"Working on {client.Guilds.Count} servers");
     }
 
@@ -35,13 +39,13 @@ public class Activities_Bot(DiscordSocketClient client, InteractionService comma
     {
         logger.LogInformation($"Logged as {client.CurrentUser}");
 
-        logger.LogWarning("Registering commands globally");
+        logger.LogInformation("Registering commands globally");
         await commands.RegisterCommandsGloballyAsync();
 
         await client.SetGameAsync($"Working on {client.Guilds.Count} servers");
     }
 
-    public async Task LogAsync(LogMessage msg)
+    public Task LogAsync(LogMessage msg)
     {
         var severity = msg.Severity switch
         {
@@ -55,7 +59,6 @@ public class Activities_Bot(DiscordSocketClient client, InteractionService comma
         };
 
         logger.Log(severity, msg.Exception, msg.Message);
-
-        await Task.CompletedTask;
+        return Task.CompletedTask;
     }
 }

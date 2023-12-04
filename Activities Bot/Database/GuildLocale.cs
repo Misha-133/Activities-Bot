@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Activities_Bot.Database;
+namespace ActivitiesBot.Database;
 
 [Table("GuildLocales")]
 public class GuildLocale

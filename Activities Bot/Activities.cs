@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Activities_Bot;
+namespace ActivitiesBot;
 
 public class AllActivities
 {

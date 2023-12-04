@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Activities_Bot;
+namespace ActivitiesBot;
 
 public class LangProvider
 {
