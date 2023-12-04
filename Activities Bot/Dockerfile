@@ -3,6 +3,8 @@
 FROM mcr.microsoft.com/dotnet/runtime:8.0 AS base
 WORKDIR /app
 
+LABEL org.opencontainers.image.source=https://github.com/Misha-133/Activities-Bot
+
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY ["Activities Bot/Activities Bot.csproj", "Activities Bot/"]
