@@ -1,6 +1,3 @@
-using System.Threading.Tasks;
-using Discord;
-using Discord.Interactions;
 using Activities_Bot.Database;
 
 namespace Activities_Bot.Modules;

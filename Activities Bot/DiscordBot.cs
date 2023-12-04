@@ -1,39 +1,20 @@
-﻿using System.Text;
+﻿namespace Activities_Bot;
 
-using Newtonsoft.Json;
-
-namespace Activities_Bot;
-
-public class Activities_Bot
+public class Activities_Bot(DiscordSocketClient client, InteractionService commands, IConfiguration config, ILogger<Activities_Bot> logger, InteractionHandler interactionHandler)
 {
-    private readonly DiscordSocketClient _client;
-    private readonly InteractionService _commands;
-    private readonly IConfiguration _config;
-    private readonly ILogger<Activities_Bot> _logger;
-    private readonly InteractionHandler _interactionHandler;
-
-    public Activities_Bot(DiscordSocketClient client, InteractionService commands, IConfiguration config, ILogger<Activities_Bot> logger, InteractionHandler interactionHandler)
-    {
-        _client = client;
-        _commands = commands;
-        _config = config;
-        _logger = logger;
-        _interactionHandler = interactionHandler;
-    }
-
     public async Task StartAsync()
     {
-        _client.Ready += ClientReady;
-        _client.JoinedGuild += JoinedGuild;
-        _client.LeftGuild += LeftGuild;
+        client.Ready += ClientReady;
+        client.JoinedGuild += JoinedGuild;
+        client.LeftGuild += LeftGuild;
 
-        _client.Log += LogAsync;
-        _commands.Log += LogAsync;
+        client.Log += LogAsync;
+        commands.Log += LogAsync;
 
-        await _interactionHandler.InitializeAsync();
+        await interactionHandler.InitializeAsync();
 
-        await _client.LoginAsync(TokenType.Bot, _config["BotToken"]);
-        await _client.StartAsync();
+        await client.LoginAsync(TokenType.Bot, config["BotToken"]);
+        await client.StartAsync();
 
 
         await Task.Delay(-1);
@@ -41,31 +22,23 @@ public class Activities_Bot
 
     private async Task LeftGuild(SocketGuild arg)
     {
-        await _client.SetGameAsync($"Working on {_client.Guilds.Count} servers");
+        await client.SetGameAsync($"Working on {client.Guilds.Count} servers");
     }
 
     private async Task JoinedGuild(SocketGuild arg)
     {
 
-        await _client.SetGameAsync($"Working on {_client.Guilds.Count} servers");
+        await client.SetGameAsync($"Working on {client.Guilds.Count} servers");
     }
 
     private async Task ClientReady()
     {
-        _logger.LogInformation($"Logged as {_client.CurrentUser}");
+        logger.LogInformation($"Logged as {client.CurrentUser}");
 
-        if (IsDebug())
-        {
-            _logger.LogWarning("Debug environment; Registering commands to dev server");
-            await _commands.RegisterCommandsToGuildAsync(ulong.Parse(_config["Development:ServerId"]));
-        }
-        else
-        {
-            _logger.LogWarning("Production environment; Registering commands globally");
-            await _commands.RegisterCommandsGloballyAsync();
-        }
+        logger.LogWarning("Registering commands globally");
+        await commands.RegisterCommandsGloballyAsync();
 
-        await _client.SetGameAsync($"Working on {_client.Guilds.Count} servers");
+        await client.SetGameAsync($"Working on {client.Guilds.Count} servers");
     }
 
     public async Task LogAsync(LogMessage msg)
@@ -81,17 +54,8 @@ public class Activities_Bot
             _ => LogLevel.Information
         };
 
-        _logger.Log(severity, msg.Exception, msg.Message);
+        logger.Log(severity, msg.Exception, msg.Message);
 
         await Task.CompletedTask;
-    }
-
-    static bool IsDebug()
-    {
-        #if DEBUG
-            return true;
-        #else
-            return false;
-        #endif
     }
 }

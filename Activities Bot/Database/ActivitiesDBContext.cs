@@ -1,23 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Activities_Bot.Database;
 
-using Discord;
-
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Activities_Bot.Database;
-
-public class ActivitiesDBContext : DbContext
+public class ActivitiesDBContext(DbContextOptions<ActivitiesDBContext> options) : DbContext(options)
 {
     public DbSet<GuildLocale> guildLocales { get; set; }
-
-    public ActivitiesDBContext(DbContextOptions<ActivitiesDBContext> options) : base(options)
-    {
-
-    }
 
     protected override void OnModelCreating(ModelBuilder builder)
 {

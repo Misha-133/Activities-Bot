@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Activities_Bot.Database;
+﻿using Activities_Bot.Database;
 
 namespace Activities_Bot.Modules;
 
@@ -30,7 +25,7 @@ public class CommandModule : ModuleBase
                                   .Build());
     }
 
-    [RequireUserPermission(GuildPermission.ManageGuild)]
+    [DefaultMemberPermissions(GuildPermission.ManageGuild)]
     [SlashCommand("set-locale", "Set bot's language")]
     public async Task SetLocaleCommand([Choice("English", "en"), Choice("Русский", "ru"), Summary("language", "Choose language")]string locale)
     {
