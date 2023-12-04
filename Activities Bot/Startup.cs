@@ -16,7 +16,7 @@ using Serilog;
 
 IConfiguration config = new ConfigurationBuilder()
  .AddJsonFile("appsettings.json", optional: true)
- .AddEnvironmentVariables()
+ .AddEnvironmentVariables("ACTIVITIES_")
  .Build();
 
 var log = new LoggerConfiguration()
