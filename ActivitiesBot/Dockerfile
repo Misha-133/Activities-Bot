@@ -7,16 +7,16 @@ LABEL org.opencontainers.image.source=https://github.com/Misha-133/Activities-Bo
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["Activities Bot/Activities Bot.csproj", "Activities Bot/"]
-RUN dotnet restore "Activities Bot/Activities Bot.csproj"
+COPY ["ActivitiesBot/ActivitiesBot.csproj", "ActivitiesBot/"]
+RUN dotnet restore "ActivitiesBot/ActivitiesBot.csproj"
 COPY . .
 WORKDIR "/src/Activities Bot"
-RUN dotnet build "Activities Bot.csproj" -c Release -o /app/build
+RUN dotnet build "ActivitiesBot.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Activities Bot.csproj" -c Release -o /app/publish
+RUN dotnet publish "ActivitiesBot.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Activities Bot.dll"]
+ENTRYPOINT ["dotnet", "ActivitiesBot.dll"]
