@@ -1,14 +1,9 @@
 name: Docker
 
 on:
-  schedule:
-    - cron: '38 7 * * *'
   push:
     branches: [ "master" ]
-    # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
-  pull_request:
-    branches: [ "master" ]
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -70,4 +65,5 @@ jobs:
         env:
           TAGS: ${{ steps.meta.outputs.tags }}
           DIGEST: ${{ steps.build-and-push.outputs.digest }}
-          run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+        
+        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
