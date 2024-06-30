@@ -1,0 +1,1 @@
+- we only store the lcale you setup for your guild. You can request removal of this data by opening an issue on this repo
